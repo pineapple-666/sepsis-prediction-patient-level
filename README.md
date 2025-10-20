@@ -1,62 +1,86 @@
-# Sepsis Prediction Project (PhysioNet 2019)
-
-## 🧠 Project Overview
-This project explores patient data from the PhysioNet Challenge 2019 to predict whether a patient **ever develops sepsis** during their ICU stay.  
-We use the `train.csv` dataset, where each row represents a **patient at a specific time**. For this project, we **aggregate data to the patient level**, so that each patient has one observation:
-- `SepsisLabel = 1` if the patient ever had sepsis  
-- `SepsisLabel = 0` otherwise  
-
-The goal is to perform **Exploratory Data Analysis (EDA)** and prepare data for further modeling.
+# Sepsis Prediction Project (PhysioNet 2019)  
+**Course:** ADEC/ADAN 7430 Midterm Project  
+**Project Goal:** Early detection of sepsis — detect whether and when a patient develops sepsis using the PhysioNet 2019 dataset.
 
 ---
 
-## 📂 Data Description
-### Data Source
-[PhysioNet Sepsis Prediction Challenge 2019](https://physionet.org/content/challenge-2019/1.0.0/)
+## Project Overview
+This project uses data from the **PhysioNet Computing in Cardiology Challenge 2019** to build classifiers that detect sepsis. The assignment has two problem formulations; for this midterm you will:
 
-### Data Categories
-- **Vital Signs (8 features):** HR, O2Sat, Temp, SBP, MAP, DBP, Resp, EtCO2  
-- **Laboratory Values (26 features):** BaseExcess, HCO3, FiO2, pH, PaCO2, etc.  
-- **Demographics (6 features):** Age, Gender, Unit1, Unit2, HospAdmTime, ICULOS  
-- **Outcome (1 feature):** SepsisLabel  
+- **Primary objective:** Predict whether and when a patient develops sepsis.
+- **Chosen approach for this submission:** *Patient-level classification* (each patient aggregated to one observation; `SepsisLabel = 1` if the patient ever had sepsis, otherwise 0).  
+  *You may extend to patient-time modeling later if time permits.*
 
----
-
-## ⚙️ Workflow
-### 1. Data Loading
-Load the provided `train.csv` file and inspect its structure.  
-Each patient’s data includes multiple time points (ICU hours).
-
-### 2. Data Transformation
-Aggregate the data to create one record per patient:
-- `PatientID` is the unique identifier.
-- `SepsisLabel` = 1 if the patient ever had sepsis, otherwise 0.
-- Aggregate continuous variables (e.g., mean, median, last recorded value).
-
-### 3. Data Cleaning
-- Handle missing values (e.g., mean/median imputation).
-- Drop features with excessive missingness.
-- Convert categorical variables (e.g., Gender, Unit1, Unit2) into numeric.
-
-### 4. Exploratory Data Analysis
-- Visualize variable distributions (histograms, boxplots).
-- Explore correlations between variables and SepsisLabel.
-- Summarize insights in tables and charts.
-
-### 5. Output
-Produce:
-- Cleaned aggregated dataset (`clean_train_patient.csv`)
-- Summary statistics table
-- Visual EDA outputs
+Link to dataset: https://physionet.org/content/challenge-2019/1.0.0/
 
 ---
 
-## 💻 Environment Setup
-You can run this project in **VS Code** using **Jupyter Notebook**.
+## Data Description
+- **Source file:** `train.csv` (hourly records per patient; located in `data/raw/` locally).
+- **Unique identifier (original):** `PatientID` + `Hour` (patient-time).
+- **Target (hour-level):** `SepsisLabel` (1 if t ≥ tsepsis−6 for sepsis patients; 0 otherwise).
+- **Target (patient-level):** aggregated `SepsisLabel_patient = max(SepsisLabel over patient hours)`.
 
-### Installation
-Clone the repository and install dependencies:
+**Feature groups**
+- Vital signs (8): HR, O2Sat, Temp, SBP, MAP, DBP, Resp, EtCO2  
+- Laboratory values (26): BaseExcess, HCO3, FiO2, pH, PaCO2, SaO2, AST, BUN, … Platelets  
+- Demographics (6): Age, Gender, Unit1, Unit2, HospAdmTime, ICULOS
+
+---
+
+## Required Steps (as per midterm)
+### Step 1 — Exploratory Data Analysis (EDA)
+1. Load `data/raw/train.csv` (local copy).
+2. Explore variable meaning and distributions (vitals, labs, demographics).
+3. Handle missing data and produce a clean, aggregated patient-level dataset (`data/processed/patient_level.csv`).
+4. Create training/validation (~80%) and test (~20%) splits — **split by patient ID** (no leakage).
+   - Use **stratified splitting** to preserve target class ratio.
+   - Apply **SMOTE** only on the training split (after split) if needed — do **not** use SMOTE before splitting.
+5. Produce a nicely formatted summary statistics table of the final clean data and provide insights.
+
+### Step 2 — Model building
+Train the following classifiers using the training data (with cross-validation):
+- **Baseline:** Logistic Regression (with feature selection / regularization — Lasso or Ridge)
+- **LDA**, **QDA**
+- **Naïve Bayes**
+- **K-Nearest Neighbors (KNN)**
+
+Guidance:
+- Use 10-fold cross validation (or 5-fold if compute-limited).
+- Experiment with full feature set and with a smaller selected set.
+- Comment on multicollinearity, feature selection, and how you chose features for each model.
+
+### Step 3 — Model evaluation
+Evaluate classifiers using appropriate metrics for imbalanced data:
+- Confusion matrix
+- Precision, recall, F1-score (focus on F1)
+- ROC AUC and Precision-Recall curves
+- Explain why one model works better/worse than others
+
+### Step 4 — Test and reporting
+1. Select the best model based on validation metrics.
+2. Retrain the selected model on the full training+validation data (no test leakage).
+3. Evaluate and report performance on held-out test data.
+4. Submit:
+   - Jupyter notebook (`.ipynb`) with numbered code cells that run top-to-bottom
+   - A concise report (Markdown or PDF) with introduction, methods, results, conclusion, and full names
+   - Cleaned processed dataset (if small) or instructions to reproduce it
+
+---
+
+## Deliverables (per rubric)
+- EDA and feature understanding
+- Missing data handling and transformation
+- Train/test split with class balance
+- Implementation of Logit (baseline), LDA, QDA, Naïve Bayes, KNN with CV
+- Performance comparison and selection of best model
+- Final predictions on test set
+- Well-written report and runnable notebook
+
+---
+
+## How to run (local environment / VS Code + Jupyter)
+1. Clone repository:
 ```bash
 git clone https://github.com/<your-username>/sepsis-prediction-patient.git
 cd sepsis-prediction-patient
-pip install -r requirements.txt
