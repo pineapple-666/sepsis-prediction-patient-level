@@ -62,7 +62,7 @@ Evaluate classifiers using appropriate metrics for imbalanced data:
 - Precision, recall, F1-score (focus on F1)
 - ROC AUC and Precision-Recall curves
 - Explain why one model works better/worse than others
-
+![image alt](https://github.com/pineapple-666/Detect-Sepsis-in-Patients-Before-it-Emerges/blob/b6f04d414459526e4b8bf5c4d2dee1739380c61d/Slide20.PNG)
 ### Step 4 — Test and reporting
 1. Select the best model based on validation metrics.
 2. Retrain the selected model on the full training+validation data (no test leakage).
