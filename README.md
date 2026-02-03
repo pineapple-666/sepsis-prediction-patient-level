@@ -5,6 +5,7 @@
 ---
 
 ## Project Overview
+![image alt](https://github.com/pineapple-666/Detect-Sepsis-in-Patients-Before-it-Emerges/blob/b6f04d414459526e4b8bf5c4d2dee1739380c61d/Slide2.PNG)
 This project uses data from the **PhysioNet Computing in Cardiology Challenge 2019** to build classifiers that detect sepsis. The assignment has two problem formulations; for this midterm you will:
 
 - **Primary objective:** Predict whether and when a patient develops sepsis.
@@ -37,7 +38,7 @@ Link to dataset: https://physionet.org/content/challenge-2019/1.0.0/
    - Use **stratified splitting** to preserve target class ratio.
    - Apply **SMOTE** only on the training split (after split) if needed — do **not** use SMOTE before splitting.
 5. Produce a nicely formatted summary statistics table of the final clean data and provide insights.
-![image alt](https://github.com/pineapple-666/Detect-Sepsis-in-Patients-Before-it-Emerges/blob/b6f04d414459526e4b8bf5c4d2dee1739380c61d/Slide2.PNG)
+
 ### Step 2 — Model building
 Train the following classifiers using the training data (with cross-validation):
 - **Baseline:** Logistic Regression (with feature selection / regularization — Lasso or Ridge)
