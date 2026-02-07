@@ -1,5 +1,5 @@
 # Sepsis Prediction Project (PhysioNet 2019)  
-**Course:** ADEC/ADAN 7430 Midterm Project  
+**Course:** ADEC/ADAN 7430 Final Project  
 **Project Goal:** Early detection of sepsis — detect whether and when a patient develops sepsis using the PhysioNet 2019 dataset.
 
 ---
@@ -7,11 +7,11 @@
 ## Project Overview
 ![image alt](https://github.com/pineapple-666/Detect-Sepsis-in-Patients-Before-it-Emerges/blob/b6f04d414459526e4b8bf5c4d2dee1739380c61d/Slide2.PNG)
 
-This project uses data from the **PhysioNet Computing in Cardiology Challenge 2019** to build classifiers that detect sepsis. The assignment has two problem formulations; for this midterm you will:
+This project uses data from the **PhysioNet Computing in Cardiology Challenge 2019** to build classifiers that detect sepsis. The project considers two problem formulations:
 
 - **Primary objective:** Predict whether and when a patient develops sepsis.
-- **Chosen approach for this submission:** *Patient-level classification* (each patient aggregated to one observation; `SepsisLabel = 1` if the patient ever had sepsis, otherwise 0).  
-  *You may extend to patient-time modeling later if time permits.*
+- **Primary modeling approach:** *Patient-level classification* (each patient aggregated to one observation; `SepsisLabel = 1` if the patient ever had sepsis, otherwise 0).  
+  *Patient-time modeling is a potential extension beyond the current scope.*
 
 Link to dataset: https://physionet.org/content/challenge-2019/1.0.0/
 
@@ -30,7 +30,7 @@ Link to dataset: https://physionet.org/content/challenge-2019/1.0.0/
 
 ---
 
-## Required Steps (as per midterm)
+## Project Workflow
 ### Step 1 — Exploratory Data Analysis (EDA)
 1. Load `data/raw/train.csv` (local copy).
 2. Explore variable meaning and distributions (vitals, labs, demographics).
@@ -50,6 +50,11 @@ Train the following classifiers using the training data (with cross-validation):
 - **LDA**, **QDA**
 - **Naïve Bayes**
 - **K-Nearest Neighbors (KNN)**
+- **Decision Tree**
+- **Bagging**
+- **Boosting**
+- **Bayesian Additive Regression Trees (BART)**
+- **Support Vector Machines (SVM)**
 
 Guidance:
 - Use 10-fold cross validation (or 5-fold if compute-limited).
@@ -62,31 +67,19 @@ Evaluate classifiers using appropriate metrics for imbalanced data:
 - Precision, recall, F1-score (focus on F1)
 - ROC AUC and Precision-Recall curves
 - Explain why one model works better/worse than others
+- Models were compared using consistent evaluation metrics to assess performance, robustness, and trade-offs between interpretability and predictive power
 ![image alt](https://github.com/pineapple-666/Detect-Sepsis-in-Patients-Before-it-Emerges/blob/b6f04d414459526e4b8bf5c4d2dee1739380c61d/Slide20.PNG)
 ### Step 4 — Test and reporting
 1. Select the best model based on validation metrics.
 2. Retrain the selected model on the full training+validation data (no test leakage).
 3. Evaluate and report performance on held-out test data.
-4. Submit:
-   - Jupyter notebook (`.ipynb`) with numbered code cells that run top-to-bottom
-   - A concise report (Markdown or PDF) with introduction, methods, results, conclusion, and full names
-   - Cleaned processed dataset (if small) or instructions to reproduce it
 
 ---
 
-## Deliverables (per rubric)
-- EDA and feature understanding
-- Missing data handling and transformation
-- Train/test split with class balance
-- Implementation of Logit (baseline), LDA, QDA, Naïve Bayes, KNN with CV
-- Performance comparison and selection of best model
-- Final predictions on test set
-- Well-written report and runnable notebook
+## Appendix
 
----
+This project was developed following best practices in applied machine learning, including reproducible preprocessing, careful train/test separation, robust model evaluation, and clear documentation of assumptions and limitations.
 
-## How to run (local environment / VS Code + Jupyter)
-1. Clone repository:
-```bash
-git clone https://github.com/<your-username>/sepsis-prediction-patient.git
-cd sepsis-prediction-patient
+Additional details on experimental design, hyperparameter tuning, and model comparisons can be found in the accompanying notebooks and reports.
+
+
